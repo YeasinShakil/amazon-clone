@@ -1,13 +1,19 @@
 
+import { Route, Routes } from 'react-router-dom';
 import './App.css'
-import Header from './header/Header'
-import Home from './Home/Home'
+import Checkout from './components/Checkout/Checkout';
+import Header from './components/header/Header'
+import Home from './components/Home/Home'
 
 function App() {
   return (
     <div className="app">
       <Header></Header>
-      <Home></Home>
+      <Routes>
+      <Route path='/' element={<Home></Home>}></Route>
+      <Route path='checkout' element={<Checkout></Checkout>}></Route>
+      
+    </Routes>
     </div>
   )
 }
