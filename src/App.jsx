@@ -4,16 +4,28 @@ import './App.css'
 import Checkout from './components/Checkout/Checkout';
 import Header from './components/header/Header'
 import Home from './components/Home/Home'
+import Login from './components/login/Login';
 
 function App() {
   return (
     <div className="app">
-      <Header></Header>
+
       <Routes>
-      <Route path='/' element={<Home></Home>}></Route>
-      <Route path='checkout' element={<Checkout></Checkout>}></Route>
-      
-    </Routes>
+        <Route path='/login' element={<Login></Login>}></Route>
+        <Route path='/' element={(
+          <>
+            <Header></Header>
+            <Home></Home>
+          </>
+        )}></Route>
+        <Route path='checkout' element={(
+          <>
+            <Header></Header>
+            <Checkout></Checkout>
+          </>
+        )}></Route>
+
+      </Routes>
     </div>
   )
 }

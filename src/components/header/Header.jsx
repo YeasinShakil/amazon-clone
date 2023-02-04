@@ -8,23 +8,25 @@ import { useStateValue } from '../../StateProvider';
 
 const Header = () => {
 
-    const [{basket}, dispatch] = useStateValue();
-    
+    const [{ basket }, dispatch] = useStateValue();
+
     return (
         <div className='header'>
             <Link to='/'>
 
-            <img src={logo} alt="" className="header_logo" />
+                <img src={logo} alt="" className="header_logo" />
             </Link>
             <div className="header_search">
                 <input type="text" className="header_searchInput" />
                 <SearchIcon className='header_searchIcon'></SearchIcon>
             </div>
             <div className="header_nav">
-                <div className="header_option">
-                    <span className="header_optionLineOne">Hello</span>
-                    <span className="header_optionLineTwo">Sign In</span>
-                </div>
+                <Link to='/login'>
+                    <div className="header_option">
+                        <span className="header_optionLineOne">Hello</span>
+                        <span className="header_optionLineTwo">Sign In</span>
+                    </div>
+                </Link>
                 <div className="header_option">
                     <span className="header_optionLineOne">returns</span>
                     <span className="header_optionLineTwo">& Orders</span>
@@ -35,10 +37,10 @@ const Header = () => {
                 </div>
                 <Link to='checkout'>
 
-                <div className="header_optionBusket">
-                    <ShoppingCartCheckoutIcon></ShoppingCartCheckoutIcon>
-                    <span className='header_optionLineTwo header_basketCount'>{basket?.length}</span>
-                </div>
+                    <div className="header_optionBusket">
+                        <ShoppingCartCheckoutIcon></ShoppingCartCheckoutIcon>
+                        <span className='header_optionLineTwo header_basketCount'>{basket?.length}</span>
+                    </div>
                 </Link>
             </div>
         </div>
