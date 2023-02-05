@@ -50,6 +50,7 @@
     border: 1px solid;
     margin-top: 10px;
     border-color: #a88734 #9c7e31 #846a29 ;
+    cursor: pointer;
 }
 .login_ragistration_button{
     border-radius: 2px;
@@ -57,4 +58,5 @@
     height: 30px;
     border: 1px solid;
     border-color: darkgray;
+    cursor: pointer;
 }
