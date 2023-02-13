@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStateValue } from '../../StateProvider';
 import './checkout.css';
 import CheckoutProduct from './CheckoutProduct';
 import Subtotal from './Subtotal';
+import { updateDoc, doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 const Checkout = () => {
-    const [{ basket, user }, dispatch] = useStateValue();
+    const [{ user }, dispatch] = useStateValue();
+    const [basket, setBasket] = useState([]);
+
+    useEffect(()=>{
+        onSnapshot(doc(db, 'user', `${user?.email}`), (doc)=> {
+            setBasket(doc.data().basket)
+        })
+    }, [user?.email])
+    // console.log(basket)
 
 
     const banner_ad = 'https://connect-assets.prosple.com/cdn/ff/zNryDlf-uf0qIh0kt7iOyMHP2B0NW30YDNDCOXMU-NM/1578558097/public/2020-01/Banner-Amazon-893x321-2020.jpg';
@@ -14,7 +24,7 @@ const Checkout = () => {
             <div className="checkout_left">
                 <img src={banner_ad} alt="" className="checkout_ad" />
                 <div className="">
-                    <p>Hello, {user?.email}</p>
+                    <strong>Hello, {user?.email}</strong>
                     <h2 className="checkout_title">Your shopping busket</h2>
                     {
                         basket.map(item => (

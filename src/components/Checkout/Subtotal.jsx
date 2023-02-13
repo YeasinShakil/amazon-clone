@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './subtotal.css';
 import CurrencyFormat from 'react-currency-format';
 import { useStateValue } from '../../StateProvider';
-import { getBasketTotal } from '../../reducer';
+// import { getBasketTotal } from '../../reducer';
+import { useNavigate } from 'react-router-dom';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../../firebase';
+
 const Subtotal = () => {
-    const [{basket}, dispatch] = useStateValue();
+    const navigat = useNavigate();
+    const [{user}, dispatch] = useStateValue();
+    const [basket, setBasket] = useState([]);
+
+    useEffect(()=>{
+        onSnapshot(doc(db, 'user', `${user?.email}`), (doc)=> {
+            setBasket(doc.data().basket)
+        })
+    }, [user?.email])
+
+    const getBasketTotal = (basket) =>
+    basket?.reduce((amount, item) => item.price + amount, 0);
+
     return (
         <div className='subtotal'>
             <CurrencyFormat
@@ -24,7 +40,8 @@ const Subtotal = () => {
                 thousandSeparator={true}
                 prefix={"$"}
             />
-            <button>Proceed to checkout</button>
+            <button onClick={(e)=> navigat
+            ('/payment')}>Proceed to checkout</button>
         </div>
     );
 };

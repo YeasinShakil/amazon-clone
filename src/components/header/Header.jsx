@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './header.css';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
@@ -7,11 +7,21 @@ import { Link } from 'react-router-dom';
 import { useStateValue } from '../../StateProvider';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
+import { updateDoc, doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 const Header = () => {
 
-    const [{ basket, user }, dispatch] = useStateValue();
+    const [{ user }, dispatch] = useStateValue();
     
+    const [basket, setBasket] = useState([]);
+
+    useEffect(()=>{
+        onSnapshot(doc(db, 'user', `${user?.email}`), (doc)=> {
+            setBasket(doc.data().basket)
+        })
+    }, [user?.email])
+
     const handleAuthentication = () => {
         if(user) {
             signOut(auth);
@@ -30,7 +40,7 @@ const Header = () => {
             <div className="header_nav" >
                 <Link to={!user && '/login'}>
                     <div className="header_option" onClick={handleAuthentication}>
-                        <span className="header_optionLineOne">Hello</span>
+                        <span className="header_optionLineOne">{!user? 'Hello' : user?.email}</span>
                         <span className="header_optionLineTwo">{user? 'Sign Out' : 'Sign In'}</span>
                     </div>
                 </Link>

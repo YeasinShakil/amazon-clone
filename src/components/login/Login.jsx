@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { auth } from '../../firebase';
+import { auth, db } from '../../firebase';
 import './login.css';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { setDoc, doc } from 'firebase/firestore';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -25,7 +26,11 @@ const Login = () => {
         e.preventDefault()
 
         createUserWithEmailAndPassword(auth, email, password).then((auth)=> {
-            console.log(auth)
+            // console.log(auth)
+            setDoc(doc(db, 'user', email), {
+                basket: []
+            })
+
             navigate('/')
         }) .catch((error) => {
             const errorCode = error.code;

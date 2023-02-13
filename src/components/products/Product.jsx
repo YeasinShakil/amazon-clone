@@ -1,21 +1,34 @@
 import React from 'react';
 import { useStateValue } from '../../StateProvider';
 import './product.css';
+import { updateDoc, doc, arrayUnion } from "firebase/firestore"; 
+import { db } from '../../firebase';
 
 const Product = ({ id, title, product_img, price, ratings }) => {
-    const [{state}, dispatch] = useStateValue();
+    const [{user}, dispatch] = useStateValue();
 
-    const addToBasket = () => {
-        dispatch({
-            type: "ADD_TO_BASKET",
-            item: {
-                id: id,
-                title: title,
-                product_img: product_img,
-                price: price,
-                ratings: ratings,
-            }
-        })
+    const addToBasket = async () => {
+       
+
+
+            // Firebese firestore
+            try {
+                const docRef = doc(db, 'user', `${user?.email}`);
+                await updateDoc(docRef, {
+                    basket: arrayUnion(
+                        {
+                            id: id,
+                            title: title,
+                            product_img: product_img,
+                            price: price,
+                            ratings: ratings,
+                        }
+                      )   
+                });
+                // console.log("Document written with ID: ", user);
+              } catch (e) {
+                console.error("Error adding document: ", e);
+              }
     }
    
     return (
